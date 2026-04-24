@@ -1,0 +1,21 @@
+[Unit]
+Description=Ollama LLM server (5090 optimized)
+Documentation=https://ollama.com
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+Environment=PATH=/root/autodl-tmp/ollama/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+Environment=OLLAMA_MODELS=/root/autodl-tmp/ollama/models
+Environment=OLLAMA_FLASH_ATTENTION=1
+Environment=OLLAMA_KV_CACHE_TYPE=q8_0
+ExecStartPre=/bin/mkdir -p /root/autodl-tmp/ollama/logs
+ExecStart=/root/autodl-tmp/ollama/bin/ollama serve
+Restart=on-failure
+RestartSec=5
+StandardOutput=append:/root/autodl-tmp/ollama/logs/ollama.log
+StandardError=append:/root/autodl-tmp/ollama/logs/ollama.log
+
+[Install]
+WantedBy=multi-user.target

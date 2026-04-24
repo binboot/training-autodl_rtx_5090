@@ -1,6 +1,6 @@
 #!/bin/bash
 # Cloudflare Tunnel 启动脚本
-# 用法: bash /root/autodl-tmp/ollama/start_cloudflared.sh
+# 用法: bash /root/autodl-tmp/cloudflared/start_cloudflared.sh
 # 依赖:
 #   - /root/autodl-tmp/cloudflared/cloudflared (二进制)
 #   - /root/autodl-tmp/.secrets/cf-tunnel.token (tunnel token, chmod 600)
@@ -11,7 +11,7 @@ set -e
 
 TOKEN_FILE=/root/autodl-tmp/.secrets/cf-tunnel.token
 BIN=/root/autodl-tmp/cloudflared/cloudflared
-LOGDIR=/root/autodl-tmp/ollama/logs
+LOGDIR=/root/autodl-tmp/cloudflared/logs
 
 [ -f "$TOKEN_FILE" ] || { echo "missing $TOKEN_FILE" >&2; exit 1; }
 [ -x "$BIN" ]        || { echo "missing or not executable: $BIN" >&2; exit 1; }

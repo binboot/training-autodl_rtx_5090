@@ -1,0 +1,19 @@
+[Unit]
+Description=Cloudflare Tunnel (ollama gateway)
+Documentation=https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/
+After=network-online.target ollama.service
+Wants=network-online.target
+Requires=ollama.service
+
+[Service]
+Type=simple
+ExecStartPre=/bin/mkdir -p /root/autodl-tmp/cloudflared/logs
+# token 从文件读，避免出现在 ps / journal 里
+ExecStart=/bin/bash -c 'TUNNEL_TOKEN=$(cat /root/autodl-tmp/.secrets/cf-tunnel.token) exec /root/autodl-tmp/cloudflared/cloudflared tunnel --no-autoupdate run'
+Restart=on-failure
+RestartSec=5
+StandardOutput=append:/root/autodl-tmp/cloudflared/logs/cloudflared.log
+StandardError=append:/root/autodl-tmp/cloudflared/logs/cloudflared.log
+
+[Install]
+WantedBy=multi-user.target
